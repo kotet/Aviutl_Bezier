@@ -5,7 +5,7 @@ Aviutl_BezierはAviutl拡張編集用のベジェ曲線を使ったスクリプ�
 ## 内容
 - bezier.anm
 
-  ベジェ曲線に沿って動かせます。
+  N次ベジェ曲線に沿って動かせます。
 
 - bezier_curve.obj
 
