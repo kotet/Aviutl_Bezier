@@ -22,3 +22,5 @@ Aviutl_BezierはAviutl拡張編集用のベジェ曲線を使ったスクリプ�
 ## 使い方
 
 あとでかく。
+
+bezier-timing-function.anm の[解説動画作った。](http://www.nicovideo.jp/watch/sm25752179)
