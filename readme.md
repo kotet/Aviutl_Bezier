@@ -30,3 +30,11 @@ bezier-timing-function.anm の[解説動画作った。](http://www.nicovideo.jp
 ### 2015/03/11
 
 改行がなくなっていた問題を修正。
+
+### 2015/3/12
+
+フォルダ構成によって動作しないことがある問題を修正。
+
+bezier_tools.luaのファイル名をlib_bezier.luaに変更。
+
+少し整理。
