@@ -1,17 +1,45 @@
 --track0:x(time),0,100,0,0.01
 --track1:開始値,-100000,100000,0,0.01
 --track2:終了値,-100000,100000,0,0.01
---dialog:P1,local p1="0,1";P2,local p2="1,0";反映対象,local target="ox";
+--dialog:制御点,local point="ease";はねる /chk,local bounce = 0;反映対象,local target="ox";
 require("lib_bezier")
 local x = obj.track0
 local startnum = obj.track1
 local endnum = obj.track2
 
 x = x / 100
-local p1x,p1y = unpack(lib_bezier.split(p1,','))
-local p2x,p2y = unpack(lib_bezier.split(p2,','))
-local result_t = lib_bezier.bisection(0,1,x,0.00001,function(t)
-		return lib_bezier.Bezier(t,0,0,p1x,p1y,p2x,p2y,1,1)
-	end)
-local result_x,result_y = lib_bezier.Bezier(result_t,0,0,p1x,p1y,p2x,p2y,1,1)
-obj[target] = result_y * (endnum - startnum + 1) + startnum
+
+local p1x,p1y,p2x,p2y
+
+if point == "ease" then
+	p1x,p1y,p2x,p2y = 0.25,0.1,0.25,1
+elseif point == "linear" then
+	p1x,p1y,p2x,p2y = 0,0,1,1
+elseif point == "ease-in" then
+	p1x,p1y,p2x,p2y = 0.42,0,1,1
+elseif point == "ease-out" then
+	p1x,p1y,p2x,p2y = 0,0,0.58,1
+elseif point == "ease-in-out" then
+	p1x,p1y,p2x,p2y = 0.42,0,0.58,1
+else
+	p1x,p1y,p2x,p2y = unpack(lib_bezier.split(point,','))
+end
+
+if x == 0 then
+	obj[target] = 0 * (endnum - startnum) + startnum
+elseif x==1 then
+	obj[target] = 1 * (endnum - startnum) + startnum
+else
+	local result_t = lib_bezier.bisection(0,1,x,0.00001,function(t)
+			return lib_bezier.Bezier(t,0,0,p1x,p1y,p2x,p2y,1,1)
+		end)
+	local result_x,result_y = lib_bezier.Bezier(result_t,0,0,p1x,p1y,p2x,p2y,1,1)
+	if (bounce == 1) then
+		if (result_y > 1) then
+		result_y = 2 - result_y -- 1-(y-1) == 2-y
+		else
+		result_y = math.abs(result_y)
+		end
+	end
+	obj[target] = result_y * (endnum - startnum) + startnum
+end

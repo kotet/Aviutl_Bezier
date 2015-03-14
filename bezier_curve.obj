@@ -1,11 +1,13 @@
 --track0:Žn“_t,0,100,0,0.01
 --track1:I“_t,0,100,100,0.01
---track2:“_ƒTƒCƒY,0,10000,1,0.01
---dialog:§Œä“_,local controlPoints="0,0,0,1,1,1";•`‰æ“_”,local numberOfPoints=1000;y‹t“] /chk,local reverse = 1;“_‚ÌF /col,local color=0xffffff;}Œ` /fig,local figureType="‰~";
+--track2:”{—¦,1,10000,1,0.01
+--track3:“_ƒTƒCƒY,0,10000,1,0.01
+--dialog:§Œä“_,local controlPoints="0,0,0.25,0.1,0.25,1,1,1";•`‰æ“_”,local numberOfPoints=1000;y‹t“] /chk,local reverse = 1;‚Í‚Ë‚é /chk,local bounce = 0;“_‚ÌF /col,local color=0xffffff;}Œ` /fig,local figureType="‰~";
 require("lib_bezier")
 local startt = obj.track0
 local endt = obj.track1
-local figsiz = obj.track2
+local mag = obj.track2
+local figsiz = obj.track3
 local cpointsstr = controlPoints
 local numofp = numberOfPoints
 local rev = reverse
@@ -19,6 +21,13 @@ if startt > endt then startt,endt = endt,startt end
 for i=1,numofp do
 	local t = startt + (i / numofp) * (endt - startt)
 	local x,y = lib_bezier.Bezier(t,unpack(points))
+	if (bounce == 1) then
+		if (y > 1) then
+		y = 2 - y -- 1-(y-1) == 2-y
+		else
+		y = math.abs(y)
+		end
+	end
 	y = rev == 1 and 1 - y or y
-	obj.draw(x,y)
+	obj.draw(x * mag,y * mag)
 end

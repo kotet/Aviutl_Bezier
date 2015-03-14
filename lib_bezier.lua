@@ -76,3 +76,11 @@ function bisection(min,max,expected,margin,func)
 		end
 	end
 end
+
+function map (func,arr)
+  local new_array = {}
+  for i,v in ipairs(array) do
+    new_array[i] = func(v)
+  end
+  return new_array
+end
